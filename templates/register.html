@@ -1,0 +1,138 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<section class="breadcrumb_area">
+    <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+    <div class="container mt-auto">
+        <div class="d-flex justify-content-center h-100">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Register</h3>
+                </div>
+                <div class="card-body">
+                    {% if form.errors %}
+                    <p style="color: red;">Please correct the errors below.</p>
+                    {% endif %}
+                    {% if msg %}
+                    <p style="color: green;">{{ msg }}</p>
+                    {% endif %}
+                    <form method="post" action="{% url 'register' %}">
+                        {% csrf_token %}
+                        <div class="row contact_form" id="registrationForm" novalidate="novalidate">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form.username.label }}
+                                    {{ form.username|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.birth_date.label }}
+                                    {{ form.birth_date|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.phone.label }}
+                                    {{ form.phone|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.password1.label }}
+                                    {{ form.password1|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.password2.label }}
+                                    {{ form.password2|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <button type="submit" class="btn theme_btn button_hover">Register</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="container">
+        <div class="page-cover text-center">
+            <h2 class="page-cover-tittle">Contact Us</h2>
+            <ol class="breadcrumb">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li class="active">Contact Us</li>
+            </ol>
+        </div>
+    </div> -->
+</section>
+
+<!-- <section class=""> -->
+
+<!-- </section> -->
+
+
+<!-- <div class="container">
+    <div class="d-flex justify-content-center h-100">
+        <div class="card">
+            <div class="card-header">
+                <h3>Register</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" action="#">
+                    {% csrf_token %}
+                    <div class="form-group mt-10">
+                        {{ form.username.label }} 
+                        {{ form.username|add_class:"single-input" }}
+                    </div>
+
+                    <div class="form-group mt-10">
+                        {{ form.birth_date.label }}
+                        {{ form.birth_date|add_class:"single-input" }}
+                    </div>
+
+                    <div class="form-group mt-10">
+                        {{ form.phone.label }}
+                        {{ form.phone|add_class:"single-input" }}
+                    </div>
+
+                    <div class="form-group mt-10">
+                        {{ form.password1.label }}
+                        {{ form.password1|add_class:"single-input" }}
+                    </div>
+
+                    <div class="form-group mt-10">
+                        {{ form.password2.label }}
+                        {{ form.password2|add_class:"single-input" }}
+                    </div>
+                   
+                    <button type="submit" class="btn btn-primary mt-3">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="d-flex justify-content-center h-100">
+        <div class="card">
+            <div class="card-header">
+                <h3>Register </h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>   -->
+
+
+{% endblock %}
