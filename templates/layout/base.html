@@ -41,17 +41,19 @@
                             <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About us</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'rooms' %}">Accomodation</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
-                            <li class="nav-item submenu dropdown">
+                            <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+                            <!-- <li class="nav-item submenu dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blog</a>
                                 <ul class="dropdown-menu">
                                     <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="blog-single.html">Blog Details</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog Details</a></li>
                                 </ul>
-                            </li> 
-                            <!-- <li class="nav-item"><a class="nav-link" href="elements.html">Elemests</a></li> -->
+                            </li>  -->
+                            <li class="nav-item"><a class="nav-link" href="{% url 'elements'%}">Elaments</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 
                             {% if request.session.id %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'booking_list'%}">Bookings</a></li>
                             <li class="nav-item"><a class="nav-link" href="">{{ request.session.username}}</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li>
                             {% else %}
@@ -75,14 +77,14 @@
         <!--================Footer Area =================-->
         <footer class="footer-area section_gap">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-3  col-md-6 col-sm-6">
+                <!-- <div class="row"> -->
+                    <!-- <div class="col-lg-3  col-md-6 col-sm-6">
                         <div class="single-footer-widget">
                             <h6 class="footer_title">About Agency</h6>
                             <p>The world has become so fast paced that people don’t want to stand by reading a page of information, they would much rather look at a presentation and understand the message. It has come to a point </p>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div> -->
+                    <!-- <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="single-footer-widget">
                             <h6 class="footer_title">Navigation Links</h6>
                             <div class="row">
@@ -104,8 +106,8 @@
                                 </div>										
                             </div>							
                         </div>
-                    </div>							
-                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>							 -->
+                    <!-- <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="single-footer-widget">
                             <h6 class="footer_title">Newsletter</h6>
                             <p>For business professionals caught between high OEM price and mediocre print and graphic output, </p>		
@@ -119,8 +121,8 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div> -->
+                    <!-- <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="single-footer-widget instafeed">
                             <h6 class="footer_title">InstaFeed</h6>
                             <ul class="list_style instafeed d-flex flex-wrap">
@@ -134,12 +136,12 @@
                                 <li><img src="{% static 'image/instagram/Image-08.jpg' %}" alt=""></li>
                             </ul>
                         </div>
-                    </div>						
-                </div>
-                <div class="border_line"></div>
+                    </div>						 -->
+                <!-- </div> -->
+                <!-- <div class="border_line"></div> -->
                 <div class="row footer-bottom d-flex justify-content-between align-items-center">
-                    <p class="col-lg-8 col-sm-12 footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <!-- <p class="col-lg-8 col-sm-12 footer-text m-0">Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+<!-- Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> -->
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                     <div class="col-lg-4 col-sm-12 footer-social">
                         <a href="#"><i class="fa fa-facebook"></i></a>

@@ -55,20 +55,19 @@
                 <div class="row mb_30">
                     {% for room in rooms %}
                     <div class="col-lg-3 col-sm-6">
-                        
                         <div class="accomodation_item text-center">
-                            <div class="hotel_img">
+                            <div class="hotel_img  h-25">
                                 <!-- <img src="{% static 'image/room1.jpg' %}" alt=""> -->
-                                <img src="{{ room.photo.url }}" alt="">
+                                <a href="{% url 'room_details' room.id %}">
+                                    <img src="{{ room.photo.url }}" alt="" style="width: 100%; height: 300px; object-fit: cover;">
+                                </a>
                                 <a href="#" class="btn theme_btn button_hover">Book Now</a>
                             </div>
                             <!-- <a href="#"><h4 class="sec_h4">Double Deluxe Room</h4></a> -->
-                            <a href="#"><h4 class="sec_h4">{{ room.name }}</h4></a>
+                            <a href="{% url 'room_details' room.id %}"><h4 class =" sec_h4 " style="cursor: pointer;">{{ room.name }}</h4></a>
                             <!-- <h5>$250<small>/night</small></h5> -->
                             <h5>₹{{ room.price_per_night }}<small>/night</small></h5>
-
-                        </div>
-                        
+                        </div>         
                     </div>
                     {% endfor %}
                 </div>

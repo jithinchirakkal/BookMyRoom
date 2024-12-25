@@ -1,0 +1,44 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+        <!--================Breadcrumb Area =================-->
+        <section class="breadcrumb_area">
+            <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+            <div class="container">
+                <div class="page-cover text-center">
+                    <h2 class="page-cover-tittle">Accomodation Details</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li class="active">Accomodation Details</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!--================Breadcrumb Area =================-->
+        
+        {% if instance and instance.id %}
+        <section class="accomodation_area section_gap">
+            <div class="container accomodation_item">
+                <div class="section_title text-center">
+                    <h2 class="title_color">{{ instance.name }}</h2>
+                </div>
+                {% if instance.photo %}
+                <div class="hotel_img">
+                    <img class="img-fluid" src="{{ instance.photo.url }}" alt="" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+                {% endif %}
+                <div class=" mb_30">
+                    <h5>₹{{ instance.price_per_night }}<small>/night</small></h5>
+                </div>
+                <div class="room_text mt-4" >
+                    {% if instance.description %}
+                    <p>{{ instance.description }}</p>
+                    {% else %}
+                    <p>A cozy and well-furnished room designed for your comfort and relaxation. It features modern amenities, including a comfortable bed, a private bathroom, air conditioning, high-speed Wi-Fi, and a flat-screen TV. Perfect for both business travelers and vacationers, this room ensures a pleasant and hassle-free stay. Enjoy the serene ambiance and thoughtful details that make it feel like a home away from home.</p>
+                    {% endif %}
+                </div>
+                <a href="#" class="btn theme_btn button_hover">Book Now</a>
+            </div>
+        </section>
+        {% endif %}
+{% endblock content %}

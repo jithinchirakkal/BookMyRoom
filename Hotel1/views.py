@@ -1,6 +1,6 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.views import View
-from .forms import CustomUserCreationForm,SignInForm
+from .forms import CustomUserCreationForm,SignInForm,BookingForm
 from .models import UserProfile,Room,Booking
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -11,7 +11,8 @@ from django.contrib.auth import authenticate, login, logout
 
 class IndexView(View):
     def get(self, request):
-        return render(request, 'index.html')
+        room = Room.objects.filter(is_available=True)
+        return render(request, 'index.html', {'rooms': room})
     
 class AboutView(View):
     def get(self, request):
@@ -21,13 +22,53 @@ class ContactView(View):
     def get(self, request):
         return render(request, 'contact.html')
     
-# class RoomView(View):
-#     def get(self, request):
-#         return render(request, 'accomodation.html')
+class ElamentsView(View):
+    def get(self, request):
+        return render(request, 'elements.html')
+    
 class RoomView(View):
     def get(self, request):
         room = Room.objects.filter(is_available=True)
         return render(request, 'accomodation.html', {'rooms': room})
+    
+class RoomDetailsView(View):
+    def get (self, request, id):
+        instance = get_object_or_404(Room,id=id)
+        return render(request,'room_details.html',{'instance':instance})
+    
+class BookingCreateView(View):
+    def get(self, request):
+        form = BookingForm()
+        return render(request, 'booking_form.html', {'form': form})
+
+    def post(self, request):
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.user = request.user  # Automatically assign the logged-in user
+            # Optionally calculate the total price here
+            booking.total_price = booking.room.price_per_night * (booking.check_out - booking.check_in).days
+            booking.save()
+            return redirect('booking_list')  # Redirect to a success page
+        return render(request, 'booking_form.html', {'form': form})
+    
+class BookingListView(View):
+    def get(self, request):
+        bookings = Booking.objects.filter(user=request.user)  # Limit bookings to the logged-in user
+        return render(request, 'booking_list.html', {'bookings': bookings})
+    
+class BookingDeleteView(View):
+    def get(self, request, pk):
+        booking = get_object_or_404(Booking, pk=pk, user=request.user)
+        booking.delete()
+        return redirect('booking_list')
+    
+class BookingDetailView(View):
+    def get(self, request, pk):
+        booking = get_object_or_404(Booking, pk=pk, user=request.user)
+        return render(request, 'booking_detail.html', {'booking': booking})
+
+
     
 class GalleryView(View):
     def get(self, request):
@@ -94,6 +135,8 @@ class LogoutView(View):
             del request.session['id']
         logout(request)
         return redirect('login')
+    
+
 
 
         

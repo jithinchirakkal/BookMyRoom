@@ -810,7 +810,24 @@ button:focus {
   font-weight: 600;
   color: #222222;
   margin-bottom: 0px;
+  
 }
+
+
+
+/* .room_name {
+  font-size: 18px;
+  line-height: 38px;
+  font-weight: 600;
+  color: #222222;
+  margin-bottom: 0px;
+  transition: color 0.3s ease; 
+  
+}
+
+.room_name:hover h4 {
+  color: #52c5fd; 
+} */
 
 .accomodation_two {
   margin-bottom: -40px;
@@ -3597,6 +3614,62 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer-bottom .footer-social a:hover {
   color: #f3c300;
+}
+
+
+/* -------------------------------------------- */
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+}
+
+.table th, .table td {
+  padding: 12px 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  color: #333;
+  font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tr:hover {
+  background-color: #c32a2a;
+}
+
+.btn i {
+  margin-right: 5px; /* Space between icon and text */
+}
+
+.btn-view {
+  color: #fff;
+  background-color: #52c5fd;
+}
+
+.btn-delete {
+  color: #fff;
+  background-color: #dc3545;
+}
+
+.btn-view:hover {
+  background-color: #40a7e1;
+}
+
+.btn-delete:hover {
+  background-color: #bb2d3b;
 }
 
 /*---------------------------------------------------- */

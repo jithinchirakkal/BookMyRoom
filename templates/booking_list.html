@@ -1,0 +1,87 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+
+        <!--================Breadcrumb Area =================-->
+        <section class="breadcrumb_area">
+            <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+            <div class="container">
+                <div class="page-cover text-center">
+                    <h2 class="page-cover-tittle">Your Bookings</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li class="active">Bookings</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!--================Breadcrumb Area =================-->
+        
+        <div class="container">
+            <table class="table border mt-25">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Room</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <!-- <th>View</th>
+                        <th>Delete</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.id }}</td>
+                        <td>{{ booking.room.name }}</td>
+                        <td>{{ booking.check_in }}</td>
+                        <td>{{ booking.check_out }}</td>
+                        <td>₹{{ booking.total_price }}</td>
+                        <td>{{ booking.status }}</td>
+                        <td class="d-flex align-content-center">
+                            <a href="{% url 'booking_detail' booking.pk %}" class="btn btn-view">
+                                <i class="fa fa-eye" style="color: black;"></i>
+                            </a>
+                            <a href="{% url 'booking_delete' booking.pk %}" class="btn btn-delete">
+                                <i class="fa fa-trash" style="color: red;"></i>
+                            </a>
+                        </td>
+                        <!-- <td>
+                            <a href="{% url 'booking_detail' booking.pk %}" class="btn btn-view">
+                                <i class="fa fa-eye" style="color: black;"></i>View
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'booking_delete' booking.pk %}" class="btn btn-delete">
+                                <i class="fa fa-trash" style="color: red;"></i>Delete
+                            </a>
+                        </td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class=" mt-10 mb-5">
+            <div class="container text-right">
+                <a href="{% url 'booking_create' %}" class="genric-btn success circle arrow">Book Now<span class="lnr lnr-arrow-right"></span></a>
+            </div>
+        </div>
+
+        
+
+
+<!-- <ul>
+    {% for booking in bookings %}
+        <li>
+            Room: {{ booking.room.name }} | Check-in: {{ booking.check_in }} | Check-out: {{ booking.check_out }}
+            <a href="{% url 'booking_detail' booking.pk %}">View</a> |
+            <a href="{% url 'booking_delete' booking.pk %}">Delete</a>
+        </li>
+    {% endfor %}
+</ul> -->
+
+{% endblock %}

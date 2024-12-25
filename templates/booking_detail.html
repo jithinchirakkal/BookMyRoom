@@ -1,0 +1,63 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}        
+
+<!--================Breadcrumb Area =================-->
+<section class="breadcrumb_area">
+    <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+    <div class="container">
+        <div class="page-cover text-center">
+            <h2 class="page-cover-tittle">Your Bookings</h2>
+            <ol class="breadcrumb">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li class="active">Booking Details</li>
+            </ol>
+        </div>
+    </div>
+</section>
+<!--================Breadcrumb Area =================-->
+
+
+
+
+<div class="container mt-5">
+    <div class="row text-center mb-20">
+        <div class="col-md-12">
+            <h2>Room : {{ booking.room.name }}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card border-0">
+                <div class="card-body">
+                    <!-- <h5 class="card-title">Room: {{ booking.room.name }}</h5> -->
+                    <p class="card-text"><strong>Name:</strong> {{ booking.first_name }} {{ booking.last_name }}</p>
+                    <!-- {% if booking.last_name %}
+                    <p class="card-text"><strong>Last Name:</strong> {{ booking.last_name }}</p>
+                    {% endif %} -->
+                    <p class="card-text"><strong>Email:</strong> {{ booking.email }}</p>
+                    <p class="card-text"><strong>Check-in:</strong> {{ booking.check_in }}</p>
+                    <p class="card-text"><strong>Check-out:</strong> {{ booking.check_out }}</p>
+                    <p class="card-text"><strong>Total Price:</strong> ₹{{ booking.total_price }}</p>
+                    {% if booking.special_request %}
+                    <p class="card-text"><strong>Special Requests:</strong> {{ booking.special_request }}</p>
+                    {% endif %}   
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0">
+                <img src="{{ booking.room.photo.url }}" class="card-img-top" alt="Room Image">
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 mb-20">
+        <div class="col-md-12">
+            <a href="{% url 'booking_list' %}" class="genric-btn success circle arrow">Back to List<span class="lnr lnr-arrow-left"></span></a>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock %}
