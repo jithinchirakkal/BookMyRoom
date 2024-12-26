@@ -18,7 +18,7 @@
         <!--================Breadcrumb Area =================-->
         
         <div class="container">
-            <table class="table border mt-25">
+            <table class="table mt-25">
                 <thead>
                     <tr>
                         <th>Booking ID</th>
@@ -41,7 +41,7 @@
                         <td>{{ booking.check_out }}</td>
                         <td>₹{{ booking.total_price }}</td>
                         <td>{{ booking.status }}</td>
-                        <td class="d-flex align-content-center">
+                        <td class="flex-column">
                             <a href="{% url 'booking_detail' booking.pk %}" class="btn btn-view">
                                 <i class="fa fa-eye" style="color: black;"></i>
                             </a>

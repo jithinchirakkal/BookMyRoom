@@ -1,15 +1,84 @@
 {% extends 'layout/base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Book a Room</h1>
-            <form method="post">
-                {% csrf_token %}
-                {{ form }}
-                <button type="submit">Submit</button>
-            </form>
+
+<!--================Breadcrumb Area =================-->
+<section class="breadcrumb_area">
+    <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+    <div class="container">
+        <div class="page-cover text-center">
+            <h2 class="page-cover-tittle">Your Bookings</h2>
+            <ol class="breadcrumb">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li class="active">Booking Details</li>
+            </ol>
+        </div>
+    </div>
+</section>
+<!--================Breadcrumb Area =================-->
+
+
+<div class="container mt-5">
+    <div class="section-top-border">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 mx-auto">
+                <h3 class="mb-4 title_color text-center">Book a Room</h3>
+                <form method="post" class="bg-light p-4 rounded shadow">
+                    {% csrf_token %}
+                    
+                    <!-- Room Selection with Icon -->
+                    <div class="form-group mt-3">
+                        <label for="room">{{ form.room.label }}</label>
+                        <div class="input-group-icon">
+                            <div class="icon">
+                                <i class="fa fa-bed" aria-hidden="true"></i> <!-- Icon for room selection -->
+                            </div>
+                            <div class="form-select">
+                                {{ form.room|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="first_name">{{ form.first_name.label }}</label>
+                        <!-- <div class="single-input"> -->
+                            {{ form.first_name|add_class:"single-input" }}
+                        <!-- </div> -->
+                    </div>  
+                    <div class="form-group mt-3">
+                        <label for="last_name">{{ form.last_name.label }}</label>
+                        {{ form.last_name|add_class:"single-input" }}
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="email">{{ form.email.label }}</label>
+                        {{ form.email|add_class:"single-input" }}
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="address">{{ form.address.label }}</label>
+                        {{ form.address|add_class:"single-textarea" }}
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="no_of_guests">{{ form.no_of_guests.label }}</label>
+                        {{ form.no_of_guests|add_class:"single-input" }}
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="check_in">{{ form.check_in.label }}</label>
+                        {{ form.check_in|add_class:"single-input" }}
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="check_out">{{ form.check_out.label }}</label>
+                        {{ form.check_out|add_class:"single-input" }}
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="special_request">{{ form.special_request.label }}</label>
+                        {{ form.special_request|add_class:"single-textarea" }}
+                    </div>
+                    <div class="text-right mt-4">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

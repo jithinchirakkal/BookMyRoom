@@ -46,8 +46,11 @@ class Booking(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
-        if self.check_in > self.check_out:
-            raise ValidationError("Check-in date must be before check-out date.")
+        if self.check_in and self.check_out:  
+            if self.check_out <= self.check_in:
+                raise ValidationError("Check-out date must be after check-in date.")
+        else:
+            raise ValidationError("Both check-in and check-out dates must be provided.")
 
     def __str__(self):
         return f"{self.user.username} - {self.room.name}"
