@@ -35,11 +35,19 @@ class RoomDetailsView(View):
     def get (self, request, id):
         instance = get_object_or_404(Room,id=id)
         return render(request,'room_details.html',{'instance':instance})
-    
+
 class BookingCreateView(View):
     def get(self, request):
-        form = BookingForm()
-        return render(request, 'booking_form.html', {'form': form})
+        # Get the room id from the query parameter
+        room_id = request.GET.get('room_id')
+        if room_id:
+            room = get_object_or_404(Room, id=room_id) # Get the room object
+        else:
+            room = None
+
+        # Create the booking form
+        form = BookingForm(initial={'room': room}) # pre-fill the form if a room is specified
+        return render(request, 'booking_form.html', {'form': form, 'room': room})
 
     def post(self, request):
         form = BookingForm(request.POST)
@@ -51,6 +59,22 @@ class BookingCreateView(View):
             booking.save()
             return redirect('booking_list')  # Redirect to a success page
         return render(request, 'booking_form.html', {'form': form})
+        
+# class BookingCreateView(View):
+#     def get(self, request):
+#         form = BookingForm()
+#         return render(request, 'booking_form.html', {'form': form})
+
+#     def post(self, request):
+#         form = BookingForm(request.POST)
+#         if form.is_valid():
+#             booking = form.save(commit=False)
+#             booking.user = request.user  # Automatically assign the logged-in user
+#             # Optionally calculate the total price here
+#             booking.total_price = booking.room.price_per_night * (booking.check_out - booking.check_in).days
+#             booking.save()
+#             return redirect('booking_list')  # Redirect to a success page
+#         return render(request, 'booking_form.html', {'form': form})
     
 class BookingListView(View):
     def get(self, request):

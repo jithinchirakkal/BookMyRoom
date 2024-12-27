@@ -37,7 +37,7 @@
                     <p>A cozy and well-furnished room designed for your comfort and relaxation. It features modern amenities, including a comfortable bed, a private bathroom, air conditioning, high-speed Wi-Fi, and a flat-screen TV. Perfect for both business travelers and vacationers, this room ensures a pleasant and hassle-free stay. Enjoy the serene ambiance and thoughtful details that make it feel like a home away from home.</p>
                     {% endif %}
                 </div>
-                <a href="#" class="btn theme_btn button_hover">Book Now</a>
+                <a href="{% url 'booking_create' %}?room_id={{ instance.id }}" class="btn theme_btn button_hover">Book Now</a>
             </div>
         </section>
         {% endif %}

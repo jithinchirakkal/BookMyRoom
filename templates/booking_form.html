@@ -17,34 +17,54 @@
     </div>
 </section>
 <!--================Breadcrumb Area =================-->
-
-
 <div class="container mt-5">
     <div class="section-top-border">
         <div class="row">
             <div class="col-lg-8 col-md-8 mx-auto">
                 <h3 class="mb-4 title_color text-center">Book a Room</h3>
+
+                <!-- {% if room %}
+                <div class="alert alert-info mb-3">
+                    <p><strong>Selected Room:</strong> {{ room.name }}</p>
+                    <p><strong>Price per Night:</strong> ${{ room.price_per_night }}</p>
+                </div>
+                {% endif %} -->
+
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
                 <form method="post" class="bg-light p-4 rounded shadow">
                     {% csrf_token %}
-                    
-                    <!-- Room Selection with Icon -->
+
                     <div class="form-group mt-3">
                         <label for="room">{{ form.room.label }}</label>
                         <div class="input-group-icon">
                             <div class="icon">
-                                <i class="fa fa-bed" aria-hidden="true"></i> <!-- Icon for room selection -->
+                                <i class="fa fa-bed" aria-hidden="true"></i>
                             </div>
                             <div class="form-select">
-                                {{ form.room|add_class:"form-control" }}
+                                <!-- {{ form.room|add_class:"form-control"|attr:"placeholder:Select Room" }} -->
+                                {{ form.room|add_class:"single-input"|attr:"placeholder:Select Room" }}
+
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group mt-3">
                         <label for="first_name">{{ form.first_name.label }}</label>
-                        <!-- <div class="single-input"> -->
-                            {{ form.first_name|add_class:"single-input" }}
-                        <!-- </div> -->
+                        {{ form.first_name|add_class:"single-input" }}
                     </div>  
                     <div class="form-group mt-3">
                         <label for="last_name">{{ form.last_name.label }}</label>
@@ -64,22 +84,38 @@
                     </div>
                     <div class="form-group mt-3">
                         <label for="check_in">{{ form.check_in.label }}</label>
-                        {{ form.check_in|add_class:"single-input" }}
+                        <!-- {{ form.check_in|add_class:"single-input" }} -->
+                        {{ form.check_in|add_class:"single-input"|attr:"placeholder:Select check-in date" }}
+
                     </div>
                     <div class="form-group mt-3">
                         <label for="check_out">{{ form.check_out.label }}</label>
-                        {{ form.check_out|add_class:"single-input" }}
+                        <!-- {{ form.check_out|add_class:"single-input" }} -->
+                        {{ form.check_out|add_class:"single-input"|attr:"placeholder:Select check_out date" }}
+
                     </div>
                     <div class="form-group mt-3">
                         <label for="special_request">{{ form.special_request.label }}</label>
                         {{ form.special_request|add_class:"single-textarea" }}
                     </div>
                     <div class="text-right mt-4">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr("#id_check_in", { dateFormat: "Y-m-d" });
+        flatpickr("#id_check_out", { dateFormat: "Y-m-d" });
+    });
+</script>
+
+
+
+
+
 {% endblock %}
