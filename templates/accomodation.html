@@ -18,33 +18,14 @@
         <!--================Breadcrumb Area =================-->
         
         <!--================ Accomodation Area  =================-->
-        <!-- <section class="accomodation_area section_gap">
-            <div class="container">
-                <div class="section_title text-center">
-                    <h2 class="title_color">Special Accommodation</h2>
-                    <p>We all live in an age that belongs to the young at heart. Life that is becoming extremely fast,</p>
-                </div>
-                {% if rooms %}
-                <div class="row mb_30">
-                    {% for room in rooms %}
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="{{ room.photo.url }}" alt="">
-                                <a href="#" class="btn theme_btn button_hover">Book Now</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4">{{ room.name }}</h4></a>
-                            <h5>₹{{ room.price_per_night }}<small>/night</small></h5>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <p class="text-center">No rooms available</p>
-                {% endif %}
-            </div>
-        </section> -->
-        
+        {% if arrival_date and departure_date and no_of_guests %}
+        <p>Arrival Date: {{ arrival_date }}</p>
+        <p>Departure Date: {{ departure_date }}</p>
+        <p>Number of Guests: {{ no_of_guests }}</p>
+        {% else %}
+            <p>No query parameters provided.</p>
+        {% endif %}
+
         <section class="accomodation_area section_gap">
             <div class="container">
                 <div class="section_title text-center">
@@ -61,7 +42,7 @@
                                 <a href="{% url 'room_details' room.id %}">
                                     <img src="{{ room.photo.url }}" alt="" style="width: 100%; height: 300px; object-fit: cover;">
                                 </a>
-                                <a href="{% url 'booking_create' %}?room_id={{ room.id }}" class="btn theme_btn button_hover">Book Now</a>
+                                <a href="{% url 'booking_create' %}?room_id={{ room.id }}&arrival_date={{ arrival_date }}&departure_date={{ departure_date }}&no_of_guests={{ no_of_guests }}" class="btn theme_btn button_hover">Book Now</a>
                             </div>
                             <!-- <a href="#"><h4 class="sec_h4">Double Deluxe Room</h4></a> -->
                             <a href="{% url 'room_details' room.id %}"><h4 class =" sec_h4 " style="cursor: pointer;">{{ room.name }}</h4></a>
@@ -91,8 +72,8 @@
                                 <div class="col-md-3">
                                     <div class="book_tabel_item">
                                         <div class="form-group">
-                                            <div class='input-group date' id='datetimepicker11'>
-                                                <input type='text' class="form-control" placeholder="Arrival Date" />
+                                            <div class='input-group date'>
+                                                <input type='text' id="arrival_date" class="form-control" placeholder="Arrival Date" />
                                                 <span class="input-group-addon">
                                                     <i class="fa fa-calendar" aria-hidden="true"></i>
                                                 </span>
@@ -103,8 +84,8 @@
                                 <div class="col-md-3">
                                     <div class="book_tabel_item">
                                         <div class="form-group">
-                                            <div class='input-group date' id='datetimepicker1'>
-                                                <input type='text' class="form-control" placeholder="Departure Date" />
+                                            <div class='input-group date'>
+                                                <input type='text' id="departure_date" class="form-control" placeholder="Departure Date" />
                                                 <span class="input-group-addon">
                                                     <i class="fa fa-calendar" aria-hidden="true"></i>
                                                 </span>
@@ -116,7 +97,7 @@
                                     <div class="book_tabel_item">
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <input type="number" class="form-control" placeholder="Number of Guests" min="1" />
+                                                <input type="number" id="no_of_guests" class="form-control" placeholder="Number of Guests" min="1" />
                                             </div>
                                         </div>
                                     </div>
@@ -124,7 +105,9 @@
                                 <div class="col-md-3">
                                     <div class="book_tabel_item">
                                         <div class="input-group">
-                                            <a class="book_now_btn button_hover" href="{% url 'booking_create' %}?room_id={{ room.id }}">Book Now</a>
+                                            <a id="book_now_btn" class="book_now_btn button_hover" href="#">
+                                                Book Now
+                                            </a>
                                         </div>
                                     </div>
                                 </div> 
@@ -134,6 +117,46 @@
                 </div>
             </div>
         </section>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Initialize flatpickr on arrival date and departure date inputs
+                flatpickr("#arrival_date", { dateFormat: "Y-m-d" });
+                flatpickr("#departure_date", { dateFormat: "Y-m-d" });
+
+                // Handle "Book Now" button click
+                document.getElementById('book_now_btn').addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent the default anchor click
+
+                    const roomId = "{{ room.id }}"; // Dynamically provided in the template
+                    const arrivalDate = document.getElementById('arrival_date').value;
+                    const departureDate = document.getElementById('departure_date').value;
+                    const numberOfGuests = document.getElementById('no_of_guests').value;
+
+                    // Debugging logs to check values
+                    console.log("Arrival Date:", arrivalDate);
+                    console.log("Departure Date:", departureDate);
+                    console.log("Number of Guests:", numberOfGuests);
+
+                    if (!arrivalDate || !departureDate || !numberOfGuests) {
+                        alert("Please fill in all fields (arrival date, departure date, and number of guests).");
+                        return; // Stop if any value is missing
+                    }
+
+                    // Construct the URL with query parameters
+                    const url = `{% url 'booking_create' %}?room_id=${roomId}&arrival_date=${arrivalDate}&departure_date=${departureDate}&no_of_guests=${numberOfGuests}`;
+                    
+                    console.log("Generated URL:", url); // Log the final URL
+
+                    // Set the href dynamically to trigger the booking page
+                    window.location.href = url; // This will redirect to the generated URL
+                });
+            });
+        </script>
+
+
+
+        
         
         <!--================Booking Tabel Area  =================-->
         <!--================ Accomodation Area  =================-->
