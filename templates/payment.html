@@ -1,0 +1,14 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h2>Payment</h2>
+        <p>Please proceed to pay the amount of ${{ booking.total_price }} for your booking.</p>
+        <form method="post" action="{% url 'process_payment' booking.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Pay ${{ booking.total_price }}</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

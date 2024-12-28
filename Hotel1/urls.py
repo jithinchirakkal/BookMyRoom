@@ -1,6 +1,6 @@
 from  django.urls import path
 from . import views
-from .views import IndexView,AboutView,ContactView,RoomView,GalleryView,BlogView,RegisterView,LoginView,LogoutView,RoomDetailsView,BookingListView,BookingCreateView,BookingDetailView,BookingDeleteView,ElamentsView
+from .views import IndexView,AboutView,ContactView,RoomView,GalleryView,BlogView,RegisterView,LoginView,LogoutView,RoomDetailsView,BookingListView,BookingCreateView,BookingDetailView,BookingDeleteView,BookingConfirmationView,PaymentView,ProcessPaymentView,ElamentsView
 
 
 urlpatterns = [
@@ -18,6 +18,11 @@ urlpatterns = [
     path('bookings/new/', BookingCreateView.as_view(), name='booking_create'),  # Create a new booking
     path('bookings/<int:pk>/', BookingDetailView.as_view(), name='booking_detail'),  # View booking details
     path('bookings/<int:pk>/delete/', BookingDeleteView.as_view(), name='booking_delete'),  # Delete a booking
+
+    path('bookings/confirmation/<int:booking_id>/', BookingConfirmationView.as_view(), name='booking_confirmation'),
+
+    path('payment/<int:booking_id>/', PaymentView.as_view(), name='booking_payment'),
+    path('process-payment/<int:booking_id>/', ProcessPaymentView.as_view(), name='process_payment'),
 
     path('elements/', ElamentsView.as_view(), name='elements'),
 

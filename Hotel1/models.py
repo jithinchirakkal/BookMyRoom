@@ -43,6 +43,7 @@ class Booking(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     special_request = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    is_paid = models.BooleanField(default=False) 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def clean(self):

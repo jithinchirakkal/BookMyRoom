@@ -5,6 +5,8 @@ from .models import UserProfile,Room,Booking
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
+from django.http import JsonResponse
+
 
 
 
@@ -124,8 +126,14 @@ class BookingCreateView(View):
             # Calculate the total price
             booking.total_price = booking.room.price_per_night * (booking.check_out - booking.check_in).days
             booking.save()
-            return redirect('booking_list')  # Redirect to a success page
+            # return redirect('booking_list')  # Redirect to a success page
+            return redirect('booking_confirmation',booking_id=booking.id)  # Redirect to a success page
         return render(request, 'booking_form.html', {'form': form})
+    
+class BookingConfirmationView(View):
+    def get(self, request, booking_id):
+        booking = get_object_or_404(Booking, id=booking_id)
+        return render(request, 'booking_confirmation.html', {'booking': booking})
         
 class BookingListView(View):
     def get(self, request):
@@ -142,7 +150,23 @@ class BookingDetailView(View):
     def get(self, request, pk):
         booking = get_object_or_404(Booking, pk=pk, user=request.user)
         return render(request, 'booking_detail.html', {'booking': booking})
+    
+class PaymentView(View):
+    def get(self, request, booking_id):
+        booking = get_object_or_404(Booking, id=booking_id)
+        return render(request, 'payment.html', {'booking': booking})
 
+class ProcessPaymentView(View):
+    def post(self, request, booking_id):
+        booking = get_object_or_404(Booking, id=booking_id)
+
+        # Here you can integrate a payment gateway like Stripe or PayPal
+        # Simulate successful payment
+        booking.is_paid = True
+        booking.save()
+
+        # Redirect to a success page or send JSON response
+        return JsonResponse({'success': True, 'message': 'Payment successful!'})
 
     
 class GalleryView(View):

@@ -1,0 +1,36 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+
+        <!--================Breadcrumb Area =================-->
+        <section class="breadcrumb_area">
+            <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+            <div class="container">
+                <div class="page-cover text-center">
+                    <h2 class="page-cover-tittle">Your Bookings</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li class="active">Bookings</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!--================Breadcrumb Area =================-->
+        <div class="container mt-5">
+            <div class="text-center">
+                <h2>Booking Successful!</h2>
+                <p>Thank you for your booking. Here are your details:</p>
+                <ul>
+                    <li><strong>Room:</strong> {{ booking.room.name }}</li>
+                    <li><strong>Check-in:</strong> {{ booking.check_in }}</li>
+                    <li><strong>Check-out:</strong> {{ booking.check_out }}</li>
+                    <li><strong>Total Guests:</strong> {{ booking.no_of_guests }}</li>
+                    <li><strong>Total Price:</strong> ${{ booking.total_price }}</li>
+                </ul>
+                <a href="{% url 'booking_payment' booking.id %}" class="btn btn-success">Pay Now</a>
+            </div>
+        </div>
+        
+
+
+        {% endblock content %}
