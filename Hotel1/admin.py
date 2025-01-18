@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Room, Booking
+from .models import Room, Booking,UserProfile
 
 # Register your models here.
 
@@ -10,4 +10,8 @@ class RoomAdmin(admin.ModelAdmin):
     list_display = ('name', 'room_type', 'price_per_night', 'is_available')
     list_filter = ('room_type', 'is_available')
     search_fields = ('name',)
+
+admin.site.register(UserProfile)
+
+
 

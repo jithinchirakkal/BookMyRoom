@@ -1,0 +1,13 @@
+{% extands "layout/base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Payment Cancelled</h1>
+            <p>You cancelled the payment. Your booking has not been confirmed.</p>
+            <a href="{% url 'index' %}" class="btn btn-primary">Go to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

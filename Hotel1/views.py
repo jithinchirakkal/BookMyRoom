@@ -1,11 +1,17 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views import View
 from .forms import CustomUserCreationForm,SignInForm,BookingForm
-from .models import UserProfile,Room,Booking
+from .models import UserProfile,Room,Booking,Transaction
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
 from django.http import JsonResponse
+from paypalrestsdk import Payment  #import the paypal sdk
+from django.conf import settings
+from decimal import Decimal
+import paypalrestsdk
+
+
 
 
 
@@ -155,18 +161,145 @@ class PaymentView(View):
     def get(self, request, booking_id):
         booking = get_object_or_404(Booking, id=booking_id)
         return render(request, 'payment.html', {'booking': booking})
+    
+paypalrestsdk.configure({
+    'mode': settings.PAYPAL_MODE,  # sandbox or live
+    'client_id': settings.PAYPAL_CLIENT_ID,
+    'client_secret': settings.PAYPAL_CLIENT_SECRET,
+})
+
 
 class ProcessPaymentView(View):
+
     def post(self, request, booking_id):
-        booking = get_object_or_404(Booking, id=booking_id)
+        # Fetch the booking object
+        booking = get_object_or_404(Booking, id=booking_id, user=request.user)
 
-        # Here you can integrate a payment gateway like Stripe or PayPal
-        # Simulate successful payment
-        booking.is_paid = True
-        booking.save()
+        # Create PayPal payment object
+        payment = Payment({
+            "intent": "sale",
+            "payer": {
+                "payment_method": "paypal"
+            },
+            "redirect_urls": {
+                "return_url": request.build_absolute_uri('/payment-success/'),
+                "cancel_url": request.build_absolute_uri('/payment-cancel/')
+            },
+            "transactions": [{
+                "item_list": {
+                    "items": [{
+                        "name": booking.room.name,
+                        "sku": str(booking.id),
+                        "price": f"{Decimal(booking.total_price):.2f}",
+                        "currency": "USD",
+                        "quantity": 1
+                    }]
+                },
+                "amount": {
+                    "total": f"{Decimal(booking.total_price):.2f}",
+                    "currency": "USD"
+                },
+                "description": f"Purchase room: {booking.room.name}"
+            }]
+        })
 
-        # Redirect to a success page or send JSON response
-        return JsonResponse({'success': True, 'message': 'Payment successful!'})
+        # Attempt to create the payment
+        try:
+            if payment.create():
+                for link in payment.links:
+                    if link.rel == "approval_url":
+                        return redirect(link.href)
+            else:
+                return render(request, 'payment_cancel.html', {'error': payment.error})
+        except Exception as e:
+            return render(request, 'payment_error.html', {'error': str(e)})
+
+
+# class ProcessPaymentView(View):
+
+#     def post(self, request, booking_id):
+#         booking = get_object_or_404(Booking, id=booking_id)
+
+#         payment = paypalrestsdk.Payment({
+#             "intent": "sale",
+#             "payer": {
+#                 "payment_method": "paypal"
+#             },
+#             "redirect_urls": {
+#                 "return_url": request.build_absolute_uri('payment-success'),
+#                 "cancel_url": request.build_absolute_uri('payment-cancel')
+#             },
+#             "transactions": [{
+#                 "item_list": {
+#                     "items": [{
+#                         "name": booking.room.title,
+#                         "sku": str(booking.id),
+#                         "price": str(booking.total_price),
+#                         "currency": "USD",
+#                         "quantity": 1
+#                     }]
+#                 },
+#                 "amount": {
+#                     "total": str(booking.total_price),
+#                     "currency": "USD"
+#                 },
+#                 "description": f"Purchase room: {booking.room.name}"
+#                 }]
+#         })
+
+#         if payment.create():
+#             for link in payment.links:
+#                 if link.rel == "approval_url":
+#                     approval_url = link.href
+#                     return redirect(link.href)
+#         else:    
+#             return render(request, 'payment_cancel.html', {'error': payment.error})
+
+
+class PaymentSuccessView(View):
+    def get(self, request):
+        payment_id = request.GET.get('paymentId')
+        payer_id = request.GET.get('PayerID')
+        payment = paypalrestsdk.Payment.find(payment_id)
+
+        if payment.execute({"payer_id": payer_id}):
+            # Get the room ID from the transaction items
+            booking_id = payment.transactions[0]['item_list']['items'][0]['sku']  # Assuming there's only one
+            booking = get_object_or_404(Booking, id=booking_id)
+
+            # Mark the booking as paid
+            booking.is_paid = True
+            booking.save()
+
+            # Create a transaction
+            Transaction.objects.create(
+                user = request.user,
+                booking = booking,
+                amount = Decimal(booking.total_price),
+                payment_status = 'Completed'
+            )
+            return render(request, 'payment_success.html', {'booking': booking})
+        else:
+            return render(request, 'payment_cancel.html', {'error': payment.error})
+        
+class PaymentCancelView(View):
+    def get(self, request):
+        return render(request, 'payment_cancel.html')
+
+
+
+
+# class ProcessPaymentView(View):
+#     def post(self, request, booking_id):
+#         booking = get_object_or_404(Booking, id=booking_id)
+
+#         # Here you can integrate a payment gateway like Stripe or PayPal
+#         # Simulate successful payment
+#         booking.is_paid = True
+#         booking.save()
+
+#         # Redirect to a success page or send JSON response
+#         return JsonResponse({'success': True, 'message': 'Payment successful!'})
 
     
 class GalleryView(View):

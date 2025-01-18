@@ -23,6 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-q-(e4_3xfc0)k0fpyw^&df86$e&ro!9+ia87!(ci496%v8@xf2'
 
+
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -32,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'Hotel1',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -133,6 +138,16 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+# PAYPAL
+PAYPAL_CLIENT_ID = 'AdegMDs3R4W_LU1sH883xKkUWzLK9KvoHzqT9_ymuQDxJSOFvpNoHEIroCKuVc3puWkZNUltKIszOhJj'
+PAYPAL_CLIENT_SECRET = 'EEpl-01IWbpTo2RiPDLpNQT12Qzcy7SUrecDaBxvTU5wmH9brT4AQy_1pXWfU7nD6hf95P8Uro-EEBRR'
+PAYPAL_MODE = 'sandbox'  # Use 'live' for production
+
+# PAYPAL_RECEIVER_EMAIL = 'sb-vng8q36122416@business.example.com'
+# PAYPAL_TEST = True
+
+LOGIN_URL = 'login/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

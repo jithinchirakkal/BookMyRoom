@@ -1,6 +1,7 @@
-from  django.urls import path
+from  django.urls import include, path
 from . import views
-from .views import IndexView,AboutView,ContactView,RoomView,GalleryView,BlogView,RegisterView,LoginView,LogoutView,RoomDetailsView,BookingListView,BookingCreateView,BookingDetailView,BookingDeleteView,BookingConfirmationView,PaymentView,ProcessPaymentView,ElamentsView
+# from paypal.standard.ipn.views import ipn
+from .views import IndexView,AboutView,ContactView,RoomView,GalleryView,BlogView,RegisterView,LoginView,LogoutView,RoomDetailsView,BookingListView,BookingCreateView,BookingDetailView,BookingDeleteView,BookingConfirmationView,PaymentView,ProcessPaymentView,PaymentSuccessView,PaymentCancelView,ElamentsView
 
 
 urlpatterns = [
@@ -23,6 +24,18 @@ urlpatterns = [
 
     path('payment/<int:booking_id>/', PaymentView.as_view(), name='booking_payment'),
     path('process-payment/<int:booking_id>/', ProcessPaymentView.as_view(), name='process_payment'),
+    path('payment-success/', PaymentSuccessView.as_view(), name='payment-success'),
+    path('payment-cancel/', PaymentCancelView.as_view(), name='payment-cancel'),
+
+    # path('process-payment/<int:booking_id>/', ProcessPaymentView.as_view(), name='process_payment'),
+    # path('payment-success/', PaymentSuccessView.as_view(), name='payment_success'),
+    # path('payment-cancel/', PaymentCancelView.as_view(), name='payment_cancel'),
+    # path('paypal-ipn/', include('paypal.standard.ipn.urls')),  # IPN URL
+
+    # path('paypal-ipn/', ipn, name='paypal-ipn'),
+
+
+
 
     path('elements/', ElamentsView.as_view(), name='elements'),
 

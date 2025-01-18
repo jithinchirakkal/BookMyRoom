@@ -1,0 +1,12 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+<h1>Booking Payment</h1>
+<p>Booking ID: {{ booking.id }}</p>
+<p>Total Price: ${{ booking.total_price }}</p>
+
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Pay Now with PayPal</button>
+</form>
+{% endblock %}

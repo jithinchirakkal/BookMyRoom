@@ -55,4 +55,17 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.room.name}"
+    
+class Transaction(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_status = models.CharField(max_length=20, default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Transaction {self.id} - {self.payment_status}"
+
+    # def __str__(self):
+    #     return f"{self.user.username} - {self.booking.room.name}"
 

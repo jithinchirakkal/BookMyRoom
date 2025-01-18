@@ -1,14 +1,31 @@
 {% extends 'layout/base.html' %}
 {% load static %}
 {% block content %}
-<div class="container mt-5">
-    <div class="text-center">
-        <h2>Payment</h2>
-        <p>Please proceed to pay the amount of ${{ booking.total_price }} for your booking.</p>
-        <form method="post" action="{% url 'process_payment' booking.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary">Pay ${{ booking.total_price }}</button>
-        </form>
-    </div>
-</div>
+
+        <!--================Breadcrumb Area =================-->
+        <section class="breadcrumb_area">
+            <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+            <div class="container">
+                <div class="page-cover text-center">
+                    <h2 class="page-cover-tittle">Payment</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li class="active">Payment</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="container mt-5 mb-20">
+                <div class="text-center">
+                    <!-- <h2>Payment</h2> -->
+                    <p class="text-dark"><strong> proceed to pay the amount of ₹{{ booking.total_price }} for your booking.</strong></p>
+                    <form method="post" action="{% url 'process_payment' booking.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="genric-btn success radius">Pay ₹{{ booking.total_price }}</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!--================Breadcrumb Area =================-->
+
 {% endblock content %}
