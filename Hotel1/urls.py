@@ -27,12 +27,9 @@ urlpatterns = [
     path('payment-success/', PaymentSuccessView.as_view(), name='payment-success'),
     path('payment-cancel/', PaymentCancelView.as_view(), name='payment-cancel'),
 
-    # path('process-payment/<int:booking_id>/', ProcessPaymentView.as_view(), name='process_payment'),
-    # path('payment-success/', PaymentSuccessView.as_view(), name='payment_success'),
-    # path('payment-cancel/', PaymentCancelView.as_view(), name='payment_cancel'),
-    # path('paypal-ipn/', include('paypal.standard.ipn.urls')),  # IPN URL
-
-    # path('paypal-ipn/', ipn, name='paypal-ipn'),
+     path('admin-dashboard/', views.AdminDashboardView.as_view(), name='admin_dashboard'),
+    path('manage-rooms/', views.ManageRoomsView.as_view(), name='manage_rooms'),
+    path('manage-bookings/', views.ManageBookingsView.as_view(), name='manage_bookings'),
 
 
 

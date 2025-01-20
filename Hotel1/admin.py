@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Room, Booking,UserProfile
+from .models import Room, Booking,UserProfile,Transaction
 
 # Register your models here.
 
@@ -12,6 +12,8 @@ class RoomAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 admin.site.register(UserProfile)
+
+admin.site.register(Transaction)
 
 
 

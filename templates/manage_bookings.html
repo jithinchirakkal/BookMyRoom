@@ -1,0 +1,57 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+
+        <!--================Breadcrumb Area =================-->
+        <section class="breadcrumb_area">
+            <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+            <div class="container">
+                <div class="page-cover text-center">
+                    <h2 class="page-cover-tittle">Manage Bookings</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                        <li class="active">Manage Bookings</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!--================Breadcrumb Area =================-->
+
+<div class="container mt-5 mb-5">
+    <table class="table table-bordered table-striped">
+        <thead class="">
+            <tr>
+                <th>#</th>
+                <th>Customer Name</th>
+                <th>Room</th>
+                <th>Total Price</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ booking.user }}</td>
+                <td>{{ booking.room.name }}</td>
+                <td>{{ booking.total_price }}</td>
+                <td>{{ booking.check_in }}</td>
+                <td>{{ booking.check_out }}</td>
+                <td>{{ booking.status }}</td>
+                <td>
+                    <a href="" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="" class="btn btn-sm btn-danger">Cancel</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No bookings found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

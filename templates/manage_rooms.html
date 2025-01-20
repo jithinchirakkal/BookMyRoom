@@ -1,0 +1,65 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+<!-- <h1>Admin Rooms Dashboard</h1> -->
+<!-- <p>Bookings :{{ bookings.count }}</p> -->
+
+        <!--================Breadcrumb Area =================-->
+        <section class="breadcrumb_area">
+            <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+            <div class="container">
+                <div class="page-cover text-center">
+                    <h2 class="page-cover-tittle">Manage Rooms</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                        <li class="active">Manage Rooms</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!--================Breadcrumb Area =================-->
+
+<div class="container mt-5 mb-5">
+    <div class="flex-row justify-content-end">
+        <a href="" class="btn btn-primary mb-3 ">Add New Room</a>
+    </div>
+
+    <!-- <h1 class="text-center">Manage Rooms</h1> -->
+    <!-- <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary mb-3">Back to Dashboard</a> -->
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Room Name</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>Photo</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in rooms %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ room.name }}(12)</td>
+                <td>{{ room.room_type }}</td>
+                <td>{{ room.price_per_night }}</td>
+                <td class="text-center">                                    
+                    <img src="{{ room.photo.url }}" alt="" style="width: 150px; height: 70px; object-fit: cover; border-radius: 10%;">
+                </td>
+                <td>{{ room.is_available }}</td>
+                <td>
+                    <a href="" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No rooms available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -42,19 +42,49 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                         <ul class="nav navbar-nav menu_nav ml-auto">
+                            {% if user.is_authenticated %}
+                                <!-- Common Links for All Authenticated Users -->
+                                <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'rooms' %}">Accommodation</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'booking_list' %}">Bookings</a></li>
+                    
+                                <!-- Links Visible Only to Staff -->
+                                {% if user.is_staff %}
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'manage_rooms' %}">Manage Rooms</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'manage_bookings' %}">Manage Bookings</a></li>
+                                {% else %}
+                                    <!-- Links Visible Only to Regular Users -->
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                                {% endif %}
+                    
+                                <!-- Logout Option -->
+                                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li>
+                            {% else %}
+                                <!-- Navigation for Non-Authenticated Users -->
+                                <li class="nav-item active"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About us</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'rooms' %}">Accommodation</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Log In</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    
+                    
+                    <!-- <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav menu_nav ml-auto">
                             <li class="nav-item active"><a class="nav-link" href="{% url 'index' %}">Home</a></li> 
                             <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About us</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'rooms' %}">Accomodation</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
-                            <!-- <li class="nav-item submenu dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blog</a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog Details</a></li>
-                                </ul>
-                            </li>  -->
-                            <!-- <li class="nav-item"><a class="nav-link" href="{% url 'elements'%}">Elaments</a></li> -->
+                            <li class="nav-item"><a class="nav-link" href="{% url 'elements'%}">Elaments</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 
                             {% if request.session.id %}
@@ -67,7 +97,7 @@
                             {% endif %}
 
                         </ul>
-                    </div> 
+                    </div>  -->
                 </nav>
             </div>
         </header>

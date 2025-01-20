@@ -133,11 +133,6 @@
                     const departureDate = document.getElementById('departure_date').value;
                     const numberOfGuests = document.getElementById('no_of_guests').value;
 
-                    // Debugging logs to check values
-                    console.log("Arrival Date:", arrivalDate);
-                    console.log("Departure Date:", departureDate);
-                    console.log("Number of Guests:", numberOfGuests);
-
                     if (!arrivalDate || !departureDate || !numberOfGuests) {
                         alert("Please fill in all fields (arrival date, departure date, and number of guests).");
                         return; // Stop if any value is missing

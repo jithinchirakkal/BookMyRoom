@@ -10,6 +10,11 @@ from paypalrestsdk import Payment  #import the paypal sdk
 from django.conf import settings
 from decimal import Decimal
 import paypalrestsdk
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
 
 
 
@@ -80,7 +85,7 @@ class RoomDetailsView(View):
         instance = get_object_or_404(Room,id=id)
         return render(request,'room_details.html',{'instance':instance})
 
-class BookingCreateView(View):
+class BookingCreateView(LoginRequiredMixin, View):
     def get(self, request):
         #get query parameter
         room_id = request.GET.get('room_id')
@@ -141,7 +146,7 @@ class BookingConfirmationView(View):
         booking = get_object_or_404(Booking, id=booking_id)
         return render(request, 'booking_confirmation.html', {'booking': booking})
         
-class BookingListView(View):
+class BookingListView(LoginRequiredMixin, View):
     def get(self, request):
         bookings = Booking.objects.filter(user=request.user)  # Limit bookings to the logged-in user
         return render(request, 'booking_list.html', {'bookings': bookings})
@@ -215,46 +220,6 @@ class ProcessPaymentView(View):
             return render(request, 'payment_error.html', {'error': str(e)})
 
 
-# class ProcessPaymentView(View):
-
-#     def post(self, request, booking_id):
-#         booking = get_object_or_404(Booking, id=booking_id)
-
-#         payment = paypalrestsdk.Payment({
-#             "intent": "sale",
-#             "payer": {
-#                 "payment_method": "paypal"
-#             },
-#             "redirect_urls": {
-#                 "return_url": request.build_absolute_uri('payment-success'),
-#                 "cancel_url": request.build_absolute_uri('payment-cancel')
-#             },
-#             "transactions": [{
-#                 "item_list": {
-#                     "items": [{
-#                         "name": booking.room.title,
-#                         "sku": str(booking.id),
-#                         "price": str(booking.total_price),
-#                         "currency": "USD",
-#                         "quantity": 1
-#                     }]
-#                 },
-#                 "amount": {
-#                     "total": str(booking.total_price),
-#                     "currency": "USD"
-#                 },
-#                 "description": f"Purchase room: {booking.room.name}"
-#                 }]
-#         })
-
-#         if payment.create():
-#             for link in payment.links:
-#                 if link.rel == "approval_url":
-#                     approval_url = link.href
-#                     return redirect(link.href)
-#         else:    
-#             return render(request, 'payment_cancel.html', {'error': payment.error})
-
 
 class PaymentSuccessView(View):
     def get(self, request):
@@ -286,20 +251,6 @@ class PaymentCancelView(View):
     def get(self, request):
         return render(request, 'payment_cancel.html')
 
-
-
-
-# class ProcessPaymentView(View):
-#     def post(self, request, booking_id):
-#         booking = get_object_or_404(Booking, id=booking_id)
-
-#         # Here you can integrate a payment gateway like Stripe or PayPal
-#         # Simulate successful payment
-#         booking.is_paid = True
-#         booking.save()
-
-#         # Redirect to a success page or send JSON response
-#         return JsonResponse({'success': True, 'message': 'Payment successful!'})
 
     
 class GalleryView(View):
@@ -352,7 +303,11 @@ class LoginView(View):
                 login(request, user)
                 request.session['username'] = username
                 request.session['id'] = user.id
-                return redirect('index')
+                # return redirect('index')
+                if user.is_staff:
+                    return redirect('admin_dashboard')
+                else:
+                    return redirect('index')
             else:
                 messages.error(request, 'Invalid username or password')
         else:
@@ -372,3 +327,33 @@ class LogoutView(View):
 
 
         
+
+
+# Helper Decorator for Staff Users
+def is_staff_user(user):
+    return user.is_staff
+
+# Admin Dashboard View (Staff Only)
+@method_decorator(user_passes_test(is_staff_user), name='dispatch')
+class AdminDashboardView(View):
+    def get(self, request):
+        bookings = Booking.objects.all()
+        rooms = Room.objects.all()
+        return render(request, 'admin_dashboard.html',{
+            'bookings': bookings,
+            'rooms': rooms
+        })
+
+# Manage Rooms View (Staff Only)
+@method_decorator(user_passes_test(is_staff_user), name='dispatch')
+class ManageRoomsView(View):
+    def get(self, request):
+        rooms = Room.objects.all()
+        return render(request, 'manage_rooms.html', {'rooms': rooms})
+
+# Manage Bookings View (Staff Only)
+@method_decorator(user_passes_test(is_staff_user), name='dispatch')
+class ManageBookingsView(View):
+    def get(self, request):
+        bookings = Booking.objects.all()
+        return render(request, 'manage_bookings.html', {'bookings': bookings})
