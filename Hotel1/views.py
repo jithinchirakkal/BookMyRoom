@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views import View
-from .forms import CustomUserCreationForm,SignInForm,BookingForm
+from .forms import CustomUserCreationForm,SignInForm,BookingForm,RoomForm
 from .models import UserProfile,Room,Booking,Transaction
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -11,6 +11,8 @@ from django.conf import settings
 from decimal import Decimal
 import paypalrestsdk
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+
 
 
 from django.contrib.auth.decorators import user_passes_test
@@ -86,7 +88,17 @@ class RoomDetailsView(View):
         return render(request,'room_details.html',{'instance':instance})
 
 class BookingCreateView(LoginRequiredMixin, View):
+
+    # Redirect non-logged-in users to the login page
+    login_url = '/login/'
+    redirect_field_name = 'next'
+
     def get(self, request):
+
+        if not request.user.is_authenticated:
+            messages.error(request, 'You must be logged in to book a room.')
+            return redirect('self.login_url')
+        
         #get query parameter
         room_id = request.GET.get('room_id')
         arrival_date = request.GET.get('arrival_date')
@@ -136,8 +148,20 @@ class BookingCreateView(LoginRequiredMixin, View):
             
             # Calculate the total price
             booking.total_price = booking.room.price_per_night * (booking.check_out - booking.check_in).days
+
+            # Check if the room is available
+            room = booking.room
+            if room.no_of_rooms <= 0:
+                messages.error(request, 'Sorry, no rooms available.')
+                return render(request, 'booking_form.html', {'form': form, 'room': room})
+            
+            #Decrement the number of rooms available
+            room.no_of_rooms -= 1
+            room.save()
+            
+            # Save the booking
             booking.save()
-            # return redirect('booking_list')  # Redirect to a success page
+
             return redirect('booking_confirmation',booking_id=booking.id)  # Redirect to a success page
         return render(request, 'booking_form.html', {'form': form})
     
@@ -148,7 +172,7 @@ class BookingConfirmationView(View):
         
 class BookingListView(LoginRequiredMixin, View):
     def get(self, request):
-        bookings = Booking.objects.filter(user=request.user)  # Limit bookings to the logged-in user
+        bookings = Booking.objects.filter(user=request.user).order_by('-created_at')  # Limit bookings to the logged-in user
         return render(request, 'booking_list.html', {'bookings': bookings})
     
 class BookingDeleteView(View):
@@ -338,9 +362,15 @@ def is_staff_user(user):
 class AdminDashboardView(View):
     def get(self, request):
         bookings = Booking.objects.all()
+        total_revenue = sum(booking.total_price for booking in bookings)
+        pending_bookings = Booking.objects.filter(status='Pending').count()
+        users = User.objects.filter(is_staff=False)
         rooms = Room.objects.all()
         return render(request, 'admin_dashboard.html',{
             'bookings': bookings,
+            'total_revenue': total_revenue,
+            'pending_bookings': pending_bookings,
+            'users': users,
             'rooms': rooms
         })
 
@@ -355,5 +385,92 @@ class ManageRoomsView(View):
 @method_decorator(user_passes_test(is_staff_user), name='dispatch')
 class ManageBookingsView(View):
     def get(self, request):
-        bookings = Booking.objects.all()
+        bookings = Booking.objects.all().order_by('-created_at')
         return render(request, 'manage_bookings.html', {'bookings': bookings})
+
+
+@method_decorator(user_passes_test(is_staff_user), name='dispatch')
+class UpdateBookingStatusView(View):
+    def post(self, request, pk):
+        # Get the booking instance by its ID
+        booking = get_object_or_404(Booking, pk=pk)
+
+        # Get the selected status from the form if the booking is not paid
+        new_status = request.POST.get('status')
+        
+        # If the booking is paid, automatically set the status to 'confirmed'
+        # if booking.is_paid:
+        #     # Set the status to confirmed if it is paid
+        #     if booking.status != 'confirmed':  # Only update if not already confirmed
+        #         booking.status = 'confirmed'
+        #         booking.save()
+        #         messages.success(request, "Booking status automatically updated to 'Confirmed' because the booking is paid.")
+        # else:
+            
+        # Only allow valid status options to be updated
+        if new_status in ['pending', 'confirmed', 'cancelled']:
+            booking.status = new_status
+            booking.save()
+            messages.success(request, f"Booking status updated to {booking.get_status_display()}.")
+        else:
+            messages.error(request, "Invalid status update.")
+
+        # Redirect back to the booking management page
+        return redirect('manage_bookings')
+
+
+
+
+
+# @method_decorator(user_passes_test(is_staff_user), name='dispatch')
+# class UpdateBookingStatusView(View):
+#     def post(self, request, pk):
+#         booking = get_object_or_404(Booking, pk=pk)
+#         status = request.POST.get('status')
+        
+#         if status in ['pending', 'confirmed', 'cancelled']:  # Only allow valid status updates
+#             booking.status = status
+#             booking.save()
+#             messages.success(request, f"Booking status updated to {status.capitalize()}.")
+#         else:
+#             messages.error(request, "Invalid status.")
+        
+#         return redirect('manage_bookings')
+    
+@method_decorator(user_passes_test(is_staff_user), name='dispatch')
+class DeleteBookingView(View):
+    def get(self, request, pk):
+        booking = get_object_or_404(Booking, pk=pk)
+        booking.delete()
+        messages.success(request, 'Booking deleted successfully!')
+        return redirect('manage_bookings')
+
+
+
+class AddEditRoomView(View):
+    def get(self, request, pk=None):
+        room = get_object_or_404(Room, pk=pk) if pk else None
+        form = RoomForm(instance=room)
+        return render(request, 'add_edit_room.html', {'form': form, 'room': room})
+
+    def post(self, request, pk=None):
+        room = get_object_or_404(Room, pk=pk) if pk else None
+        form = RoomForm(request.POST, request.FILES, instance=room)
+        if form.is_valid():
+            form.save()
+            if room:
+                messages.success(request, 'Room updated successfully!')
+            else:
+                messages.success(request, 'Room added successfully!')
+            return redirect('manage_rooms')  # Redirect to the rooms management page
+        return render(request, 'add_edit_room.html', {'form': form, 'room': room})
+
+
+@method_decorator(user_passes_test(is_staff_user), name='dispatch')
+class DeleteRoomView(View):
+    def get(self, request, pk):
+        print(f"Attempting to delete room with ID {pk}")
+        room = get_object_or_404(Room, pk=pk)
+        room.delete()
+        messages.success(request, 'Room deleted successfully!')
+        return redirect('manage_rooms')

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from datetime import date
-from .models import Booking
+from .models import Booking, Room
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -54,4 +54,19 @@ class BookingForm(forms.ModelForm):
         if no_of_guests < 1:
             raise forms.ValidationError("Number of guests must be at least 1.")
         return no_of_guests
+    
+class RoomForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = ['name', 'room_type', 'photo', 'price_per_night', 'max_guests', 'no_of_rooms', 'description', 'is_available']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'room_type': forms.Select(attrs={'class': 'form-control'}),
+            'photo': forms.FileInput(attrs={'class': 'form-control-file'}),
+            'price_per_night': forms.NumberInput(attrs={'class': 'form-control'}),
+            'max_guests': forms.NumberInput(attrs={'class': 'form-control'}),
+            'no_of_rooms': forms.NumberInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'is_available': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
 

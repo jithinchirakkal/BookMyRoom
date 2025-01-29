@@ -1,6 +1,86 @@
 {% extends 'layout/base.html' %}
 {% load static %}
 {% block content %}
-<h1>Admin Dashboard</h1>
+
+
+        <!--================Breadcrumb Area =================-->
+        <section class="breadcrumb_area">
+            <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+            <div class="container">
+                <div class="page-cover text-center">
+                    <h2 class="page-cover-tittle">Welcome to the Admin Dashboard</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                        <li class="active">Admin Dashboard</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!--================Breadcrumb Area =================-->
+
+        <div class="container-fluid">
+            <!-- Sidebar -->
+            <div class="row">
+                <nav class="col-md-2 bg-dark text-white min-vh-100 p-3">
+                    <h3 class="text-center">Admin Panel</h3>
+                    <ul class="nav flex-column mt-4">
+                        <li class="nav-item">
+                            <a href="{% url 'admin_dashboard' %}" class="nav-link text-white">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'booking_list' %}" class="nav-link text-white">Bookings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'rooms' %}" class="nav-link text-white">Rooms</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'manage_rooms' %}" class="nav-link text-white">Manage Rooms</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'manage_bookings' %}" class="nav-link text-white">Manage Bookings</a>
+                        </li>
+                    </ul>
+                </nav>
+    
+                <!-- Main Content -->
+                <main class="col-md-10 p-4">
+                    <!-- <h1>Welcome to the Admin Dashboard</h1> -->
+                    <div class="row mt-4">
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Bookings</h5>
+                                    <p class="card-text">{{ bookings.count }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Revenue</h5>
+                                    <p class="card-text">${{ total_revenue }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Active Users</h5>
+                                    <p class="card-text">{{ users.count }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pending Requests</h5>
+                                    <p class="card-text">{{ pending_bookings }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
 <!-- <p>Bookings :{{ bookings.count }}</p> -->
 {% endblock %}

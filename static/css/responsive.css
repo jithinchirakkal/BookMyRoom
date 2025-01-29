@@ -112,8 +112,12 @@
 		padding: 25px 30px;
 	}
 	.footer-area .col-sm-6{
-		margin-bottom: 30px;
+		margin-bottom: 3px;
 	}
+	.footer {
+		background: #04091e;
+		padding: 14px 0px;
+	  }
 	.footer-bottom{
 		text-align: center;
 	}

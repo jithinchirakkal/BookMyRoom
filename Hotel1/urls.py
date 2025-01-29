@@ -27,9 +27,21 @@ urlpatterns = [
     path('payment-success/', PaymentSuccessView.as_view(), name='payment-success'),
     path('payment-cancel/', PaymentCancelView.as_view(), name='payment-cancel'),
 
-     path('admin-dashboard/', views.AdminDashboardView.as_view(), name='admin_dashboard'),
+    # admin side
+
+    path('admin-dashboard/', views.AdminDashboardView.as_view(), name='admin_dashboard'),
+
     path('manage-rooms/', views.ManageRoomsView.as_view(), name='manage_rooms'),
+    path('rooms/add/', views.AddEditRoomView.as_view(), name='add_room'),
+    path('rooms/edit/<int:pk>/', views.AddEditRoomView.as_view(), name='edit_room'),
+    path('rooms/delete/<int:pk>/', views.DeleteRoomView.as_view(), name='delete_room'),
+
+
     path('manage-bookings/', views.ManageBookingsView.as_view(), name='manage_bookings'),
+    path('booking/update-status/<int:pk>/', views.UpdateBookingStatusView.as_view(), name='update_booking_status'),
+    path('bookings/delete/<int:pk>/', views.DeleteBookingView.as_view(), name='delete_booking'),
+
+
 
 
 
