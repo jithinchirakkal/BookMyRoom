@@ -18,13 +18,13 @@
         <!--================Breadcrumb Area =================-->
         
         <!--================ Accomodation Area  =================-->
-        {% if arrival_date and departure_date and no_of_guests %}
+        <!-- {% if arrival_date and departure_date and no_of_guests %}
         <p>Arrival Date: {{ arrival_date }}</p>
         <p>Departure Date: {{ departure_date }}</p>
         <p>Number of Guests: {{ no_of_guests }}</p>
         {% else %}
             <p>No query parameters provided.</p>
-        {% endif %}
+        {% endif %} -->
 
         <section class="accomodation_area section_gap">
             <div class="container">
@@ -132,11 +132,6 @@
                     const arrivalDate = document.getElementById('arrival_date').value;
                     const departureDate = document.getElementById('departure_date').value;
                     const numberOfGuests = document.getElementById('no_of_guests').value;
-
-                    // Debugging logs to check values
-                    console.log("Arrival Date:", arrivalDate);
-                    console.log("Departure Date:", departureDate);
-                    console.log("Number of Guests:", numberOfGuests);
 
                     if (!arrivalDate || !departureDate || !numberOfGuests) {
                         alert("Please fill in all fields (arrival date, departure date, and number of guests).");

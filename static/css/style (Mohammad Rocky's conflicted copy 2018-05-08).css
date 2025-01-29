@@ -1847,7 +1847,11 @@ button:focus {
 /*============== footer-area css ===============*/
 .footer-area {
   background: #04091e;
-  padding: 142px 0px;
+  padding: 14px 0px;
+}
+.footer {
+  background: #04091e;
+  padding: 14px 0px;
 }
 
 .single-footer-widget ul li a {

@@ -7,28 +7,84 @@
             <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
             <div class="container">
                 <div class="page-cover text-center">
-                    <h2 class="page-cover-tittle">Your Bookings</h2>
+                    <h2 class="page-cover-tittle">Booking Confirmation</h2>
                     <ol class="breadcrumb">
                         <li><a href="{% url 'index' %}">Home</a></li>
-                        <li class="active">Bookings</li>
+                        <li class="active">Booking</li>
                     </ol>
                 </div>
             </div>
         </section>
         <!--================Breadcrumb Area =================-->
-        <div class="container mt-5">
-            <div class="text-center">
-                <h2>Booking Successful!</h2>
-                <p>Thank you for your booking. Here are your details:</p>
-                <ul>
-                    <li><strong>Room:</strong> {{ booking.room.name }}</li>
-                    <li><strong>Check-in:</strong> {{ booking.check_in }}</li>
-                    <li><strong>Check-out:</strong> {{ booking.check_out }}</li>
-                    <li><strong>Total Guests:</strong> {{ booking.no_of_guests }}</li>
-                    <li><strong>Total Price:</strong> ${{ booking.total_price }}</li>
-                </ul>
-                <a href="{% url 'booking_payment' booking.id %}" class="btn btn-success">Pay Now</a>
+        <!-- <div class="container mt-5 mb-20 flex justify-content-center">
+            <div class="col-lg-4 col-sm-6 mt-sm-30 typo-sec">
+                <h2 class="mb-20 title_color">Booking Successful!</h2>
+                <div class="mt-10 mb-5 ">
+                    <p>Thank you for your booking. Here are your details:</p>
+                    <div class="row">
+                       
+                        <div class="col-md-9 mt-sm-20 left-align-p">
+                            <ul class="unordered-list">
+                                <li><strong>Room:</strong> {{ booking.room.name }}</li>
+                                <li><strong>Check-in:</strong> {{ booking.check_in }}</li>
+                                <li><strong>Check-out:</strong> {{ booking.check_out }}</li>
+                                <li><strong>Total Guests:</strong> {{ booking.no_of_guests }}</li>
+                                <li><strong>Total Price:</strong> ₹{{ booking.total_price }}</li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-3">
+                            <img src="{{ booking.room.photo.url }}" alt="Room Image">
+                        </div>
+                        
+                    </div> 
+                </div>
+                <a href="{% url 'booking_payment' booking.id %}" class="genric-btn success circle arrow">Pay Now<span class="lnr lnr-arrow-right"></span></a>
             </div>
+        </div> -->
+
+
+        <div class="container mt-5">
+            <div class="row text-center mb-20">
+                <div class="col-md-12">
+                    <h2 class="mb-20 title_color">Booking Successful!</h2>
+                    <p>Thank you for your booking. Here are your details:</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card border-0">
+                        <div class="card-body">
+                            
+                            <!-- <p class="card-text"><strong>Room:</strong> {{ booking.room.name }}</p>
+                            <p class="card-text"><strong>Check-in:</strong> {{ booking.check_in }}</p>
+                            <p class="card-text"><strong>Check-out:</strong> {{ booking.check_out }}</p>
+                            <p class="card-text"><strong>Total Guests:</strong> {{ booking.no_of_guests }}</p>
+                            <p class="card-text"><strong>Total Price:</strong> ₹{{ booking.total_price }}</p>
+                             -->
+                             <ul class="unordered-list">
+                                <li><strong>Room:</strong> {{ booking.room.name }}</li>
+                                <li><strong>Check-in:</strong> {{ booking.check_in }}</li>
+                                <li><strong>Check-out:</strong> {{ booking.check_out }}</li>
+                                <li><strong>Total Guests:</strong> {{ booking.no_of_guests }}</li>
+                                <li><strong>Total Price:</strong> ₹{{ booking.total_price }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-0">
+                        <img src="{{ booking.room.photo.url }}" class="card-img-top" alt="Room Image">
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5 mb-20">
+                <div class="col-md-12 text-right">
+                    <a href="{% url 'booking_payment' booking.id %}" class="genric-btn success circle arrow">Pay Now<span class="lnr lnr-arrow-right"></span></a>
+                </div>
+            </div>
+        
+        
         </div>
         
 

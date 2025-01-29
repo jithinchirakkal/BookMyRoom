@@ -1,0 +1,80 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+
+
+        <!--================Breadcrumb Area =================-->
+        <section class="breadcrumb_area">
+            <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+            <div class="container">
+                <div class="page-cover text-center">
+                    <h2 class="page-cover-tittle">Manage Rooms</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                        <li class="active">Manage Rooms</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!--================Breadcrumb Area =================-->
+
+
+        <div class="container mt-5">
+            <h2 class="mb-4">
+                {% if room %} Edit Room: {{ room.name }} {% else %} Add New Room {% endif %}
+            </h2>
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                </div>
+                <div class="mb-3">
+                    {{ form.room_type.label_tag }}
+                    {{ form.room_type }}
+                </div>
+                <div class="mb-3">
+                    {{ form.photo.label_tag }}
+                    {{ form.photo }}
+                </div>
+                <div class="mb-3">
+                    {{ form.price_per_night.label_tag }}
+                    {{ form.price_per_night }}
+                </div>
+                <div class="mb-3">
+                    {{ form.max_guests.label_tag }}
+                    {{ form.max_guests }}
+                </div>
+                <div class="mb-3">
+                    {{ form.no_of_rooms.label_tag }}
+                    {{ form.no_of_rooms }}
+                </div>
+                <div class="mb-3">
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                </div>
+                <div class="form-check mb-3">
+                    {{ form.is_available }}
+                    {{ form.is_available.label_tag }}
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    {% if room %} Update Room {% else %} Add Room {% endif %}
+                </button>
+                <a href="{% url 'manage_rooms' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+        
+
+{% endblock %}

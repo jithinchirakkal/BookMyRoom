@@ -1,8 +1,12 @@
 /*============== footer-area css ===============*/
 .footer-area{
     background: #04091e;
-    padding: 142px 0px;
+    padding: 14px 0px;
 }
+.footer {
+    background: #04091e;
+    padding: 14px 0px;
+  }
 .single-footer-widget{
     ul{
         li{
@@ -67,7 +71,7 @@
     font-weight: 600;
     color: #fff;
     text-transform: uppercase;
-    margin-bottom: 28px;
+    // margin-bottom: 28px;
 }
 .border_line{
     width: 100%;
@@ -75,24 +79,24 @@
     background: #333333;
     margin-top: 30px;
 }
-.footer-bottom{
-    padding-top: 46px;
-    .footer-text{
-        a{
-            color: $yellow;
-        }
-    }
-    .footer-social{
-        text-align: right;
-        a{
-            font-size: 18px;
-            line-height: 30px;
-            color: #82848f;
-            margin-left: 25px;
-            transition: all 0.3s linear;
-            &:hover{
-                color: $yellow;
-            }
-        }
-    }
-}
+// .footer-bottom{
+//     padding-top: 46px;
+//     .footer-text{
+//         a{
+//             color: $yellow;
+//         }
+//     }
+//     .footer-social{
+//         text-align: right;
+//         a{
+//             font-size: 18px;
+//             line-height: 30px;
+//             color: #82848f;
+//             margin-left: 25px;
+//             transition: all 0.3s linear;
+//             &:hover{
+//                 color: $yellow;
+//             }
+//         }
+//     }
+// }
